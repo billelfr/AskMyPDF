@@ -22,6 +22,7 @@ export const useUpload = (onSuccess?: () => void) => {
   };
 
   const upload = useCallback(async (file: File) => {
+    console.log("✅ useUpload.upload()", file.name);
     const validationError = validate(file);
     if (validationError) {
       setError(validationError);

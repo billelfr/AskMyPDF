@@ -16,11 +16,16 @@ export function UploadModal({ open, onClose, onSuccess }: UploadModalProps) {
   const { upload, status, progress, error, reset } = useUpload(onSuccess);
 
   const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (acceptedFiles[0]) void upload(acceptedFiles[0]);
-    },
-    [upload],
-  );
+  (acceptedFiles: File[]) => {
+    console.log("📄 onDrop", acceptedFiles);
+
+    if (acceptedFiles[0]) {
+      console.log("🚀 Calling upload()");
+      void upload(acceptedFiles[0]);
+    }
+  },
+  [upload],
+);
 
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
     onDrop,
