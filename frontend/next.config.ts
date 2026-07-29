@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://askmypdf-g2xi.onrender.com/:path*',
+        destination: 'https://askmypdf-g2xi.onrender.com/api/:path*',
       },
     ];
   },
