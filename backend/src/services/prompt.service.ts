@@ -12,14 +12,25 @@ import type { RetrievalMatch } from './retrieval.service.js';
 export const buildRagPrompt = (question: string, chunks: RetrievalMatch[]): string => {
   const context = formatChunks(chunks);
 
-  return `You are a precise document assistant. Your only knowledge source is the CONTEXT below, which consists of excerpts extracted from a PDF document. Use ONLY the information provided in the CONTEXT to answer the question.
+  return `You are an AI assistant that answers questions using the provided document context.
 
-Rules you MUST follow:
-- Base your answer exclusively on the CONTEXT. Do not add external knowledge.
-- If the CONTEXT does not contain enough information to answer, respond with: "I could not find a clear answer to this question in the document."
-- Cite the page number(s) when referencing specific information, e.g. "(page 4)".
-- Keep the answer focused, accurate, and concise.
-- Do not speculate or make assumptions beyond what is written.
+Never mention:
+- chunk
+- chunk id
+- vector
+- embedding
+- retrieval score
+- internal metadata
+
+Only use the document text.
+
+If citing sources, mention only page numbers.
+
+Good:
+Source: Page 7
+
+Bad:
+Source: Page 7, Chunk 6
 
 ---
 
@@ -38,10 +49,10 @@ ANSWER:`;
  * Formats retrieved chunks into a numbered, page-tagged context block.
  *
  * Example output:
- *   [1] (page 3, chunk 0)
+ *   [1] (page 3)
  *   The company was founded in 1998...
  *
- *   [2] (page 5, chunk 2)
+ *   [2] (page 5)
  *   Revenue grew by 42% in the third quarter...
  */
 const formatChunks = (chunks: RetrievalMatch[]): string => {
@@ -50,6 +61,6 @@ const formatChunks = (chunks: RetrievalMatch[]): string => {
   }
 
   return chunks
-    .map((chunk, index) => `[${index + 1}] (page ${chunk.page}, chunk ${chunk.chunkIndex})\n${chunk.text}`)
+    .map((chunk, index) => `[${index + 1}] (page ${chunk.page})\n${chunk.text}`)
     .join('\n\n');
 };
