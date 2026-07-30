@@ -31,17 +31,17 @@ export function MessageBubble({ message }: MessageProps) {
       </div>
 
       {/* Bubble */}
-      <div className={cn('max-w-[75%] min-w-0', isUser ? 'items-end' : 'items-start', 'flex flex-col gap-2')}>
+      <div className={cn('max-w-[85%] sm:max-w-[75%] min-w-0', isUser ? 'items-end' : 'items-start', 'flex flex-col gap-2')}>
         <div
           className={cn(
-            'rounded-2xl px-4 py-3 text-sm leading-relaxed',
+            'rounded-2xl px-4 py-3 text-sm leading-relaxed break-words',
             isUser
               ? 'bg-indigo-600 text-white rounded-tr-sm'
               : 'bg-slate-100 text-slate-800 rounded-tl-sm',
           )}
         >
           {isUser ? (
-            <p className="whitespace-pre-wrap">{message.content}</p>
+            <p className="whitespace-pre-wrap break-words">{message.content}</p>
           ) : (
             <div className="prose prose-sm max-w-none prose-slate">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>

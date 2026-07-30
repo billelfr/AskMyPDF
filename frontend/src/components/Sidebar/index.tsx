@@ -11,9 +11,11 @@ interface SidebarProps {
   activeDocumentId: string | null;
   onSelectDocument: (id: string) => void;
   onDocumentDeleted: (id: string) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export function Sidebar({ activeDocumentId, onSelectDocument, onDocumentDeleted }: SidebarProps) {
+export function Sidebar({ activeDocumentId, onSelectDocument, onDocumentDeleted, isOpen, onClose }: SidebarProps) {
   const [uploadOpen, setUploadOpen] = useState(false);
   const { data: documents, isLoading, isError } = useDocuments();
   const { mutate: deleteDoc, variables: deletingId } = useDeleteDocument();
@@ -29,8 +31,20 @@ export function Sidebar({ activeDocumentId, onSelectDocument, onDocumentDeleted 
 
   return (
     <>
+      {/* Mobile backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity"
+          onClick={onClose}
+        />
+      )}
+
       {/* Sidebar shell */}
-      <aside className="flex flex-col w-72 shrink-0 bg-slate-950 border-r border-slate-800 h-screen">
+      <aside 
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-72 shrink-0 bg-slate-950 border-r border-slate-800 h-screen transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
         {/* Header */}
         <div className="px-4 py-5 border-b border-slate-800">
           <div className="flex items-center gap-2 mb-4">

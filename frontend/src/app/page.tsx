@@ -17,6 +17,7 @@ import type { ApiDocument } from '@/types';
  */
 export default function Home() {
   const [activeDocumentId, setActiveDocumentId] = useState<string | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { data: documents } = useDocuments();
 
   const activeDocument: ApiDocument | null =
@@ -27,13 +28,21 @@ export default function Home() {
   };
 
   return (
-    <main className="flex h-screen overflow-hidden">
+    <main className="flex h-screen overflow-hidden relative w-full">
       <Sidebar
         activeDocumentId={activeDocumentId}
-        onSelectDocument={setActiveDocumentId}
+        onSelectDocument={(id) => {
+          setActiveDocumentId(id);
+          setIsSidebarOpen(false);
+        }}
         onDocumentDeleted={handleDocumentDeleted}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
-      <ChatPanel document={activeDocument} />
+      <ChatPanel 
+        document={activeDocument} 
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
     </main>
   );
 }
