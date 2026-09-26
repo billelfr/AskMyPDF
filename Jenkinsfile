@@ -4,8 +4,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-                echo 'Hello World!
-                jenkins run auto'
+                echo 'Hello World! jenkins run auto'
             }
         }
     }
